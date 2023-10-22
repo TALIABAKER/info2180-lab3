@@ -26,4 +26,64 @@ window.onload= function()
         gmesqr[j].setAttribute("class","square");
     }
 
+    gmesqr.forEach((seg, position) => 
+    {
+        seg.addEventListener('click', () => userAction(seg, position));
+        seg.addEventListener('mouseover', function()
+        {
+        seg.classList.add('hover');
+       // seg.removeEventListener('click', () => userAction(seg, position))
+        });
+        seg.addEventListener('mouseout', function(){
+            seg.classList.remove('hover');
+        });
+    });
+
+    function checkWin()
+    {
+        for(let i=0; i<=7; i++){
+            const win = winningConditions[i];
+ 
+            const pos1= sqr_pos[win[0]];
+            const pos2 = sqr_pos[win[1]];
+            const pos3 = sqr_pos[win[2]];
+            if (pos1 === ''|| pos2 === ''|| pos3===''){
+                continue;
+            }  
+            if (pos1 === pos2 && pos2 === pos3)
+            {
+                status.innerHTML= 'Congratulations!' +  pos1 +' is the winner';
+                status.classList.add('you-won');
+                break;
+            }     
+        }
+    }
+    const userAction= (seg,position) =>
+    {
+        console.log(seg.innerText)
+
+        if(seg.innerText !== 'X' || seg.innerText !== 'O')
+        {
+            seg.innerText= player;
+            seg.classList.add(player);
+            sqr_pos[position]=player;
+            console.log(sqr_pos);
+            checkWin();
+            if (player === 'X' ? player ='O' : player ='X');
+        }
+
+    }
+
+    button.addEventListener('click', ()=>
+    {
+        sqr_pos=['', '', '', '', '', '', '', '', ''];
+        status.innerHTML= 'Move your mouse over a square and click to play an X or an O.'
+        status.classList.remove('you-won');
+        gmesqr.forEach(seg =>
+            {
+            seg.innerText ='';
+            seg.classList.remove('X');
+            seg.classList.remove('O');
+        });
+    });
 }
